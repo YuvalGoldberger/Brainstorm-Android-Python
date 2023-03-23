@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     private String code;
     private static Socket client;
     private static String ip, name;
-    private static boolean sent = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,18 +57,23 @@ public class MainActivity extends AppCompatActivity {
                 Thread dnsThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        Looper.prepare();
                         try {
                             Socket dns = new Socket("192.168.1.153", 11111);
                             PrintWriter out = new PrintWriter(dns.getOutputStream(), true);
                             BufferedReader in = new BufferedReader(new InputStreamReader(dns.getInputStream()));
                             out.println("get " + code);
                             ip = in.readLine();
-                            dns.close();
+                            if(ip.contains("Wrong Code")) {
+                                Toast.makeText(getApplicationContext(), "קוד הכניסה שגוי. הכנס קוד חדש.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            else {
+                                Intent intent = new Intent(getApplicationContext(), ConnectionActivity.class);
+                                startActivity(intent);
+                            }
 
-                            // Create an intent of the ConnectionActivity page
-                            Intent intent = new Intent(getApplicationContext(), ConnectionActivity.class);
-                            startActivity(intent);
-
+                            Looper.loop();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

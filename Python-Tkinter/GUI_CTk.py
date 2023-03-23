@@ -10,7 +10,7 @@ import pyglet
 import time
 import os
 
-from labelDesign import TextDesign
+from TextDesign import TextDesign
 
 class GUI:
     
@@ -126,8 +126,8 @@ class GUI:
                         client[0].send(f'{self.SUBJECT}\n'.encode()) 
                     except:
                         self.clients.pop()
-                self.changeWindow()
                 self.SERVER_STARTED = True
+                self.changeWindow()
             else:
                 tkinter.messagebox.showerror("שגיאה", "הנושא צריך להיות פחות מ-20 תווים") 
         else:
@@ -185,12 +185,7 @@ class GUI:
         # Reset last window
         for widget in self.screen.winfo_children():
             widget.destroy()
-<<<<<<< HEAD
-=======
         
-        time.sleep(0.5)
->>>>>>> parent of dc9bb7e (DNS Fix)
-
         # Create new window for new server
         subjectLabel = CTkLabel(self.screen, text=self.SUBJECT, font=("Assistant ExtraBold", 65))
         subjectLabel.pack()
@@ -255,7 +250,6 @@ class GUI:
     def timerInterval(self):
         """
         * Sets a timer (30sec) for clients to send associations. If they don't they get disconnected.
-<<<<<<< HEAD
         """
         import queue
         temp = CTkLabel(self.screen, font=(
@@ -289,25 +283,6 @@ class GUI:
                 self.clients.pop(self.clients.index(i))
                 client.close()
         
-=======
-        """  
-        for i in range(30, 0, -1):
-            temp = CTkLabel(self.screen, text=f'הזמן שנותר: {i} שניות', font=("Assistant Medium", 15))
-            temp.place(relx=0.05, rely = 0.05, anchor=NW)
-            time.sleep(1)
-            temp.destroy()
-            if not self.countdown:
-                break
-        for i in range(len(self.clients)):
-            # Try-Except block as clients might have disconnected before
-            client = self.clients[i][0]
-            try:
-                client.send("disconnect\n".encode())
-            except:
-                self.clients.pop(i)
-                client.close()
-    
->>>>>>> parent of dc9bb7e (DNS Fix)
     def restartGUI(self):
         """
         * Resets the GUI (returns to settings window)
@@ -316,7 +291,6 @@ class GUI:
         # Reset last window
         for widget in self.screen.winfo_children():           
             widget.destroy()
-            time.sleep(0.05)
         for i in self.clients:
             # Try-Except block as clients might have disconnected before
             client = i[0]

@@ -52,18 +52,19 @@ public class ConnectionActivity extends AppCompatActivity {
                 Looper.prepare();
                 try {
                     // Connect to server
-                    Socket client = new Socket(ip, 25565);
-                    Toast.makeText(getApplicationContext(), "Connected to " + ip + " : 25565", Toast.LENGTH_SHORT).show();
+                    if(getClient() == null || !getClient().isConnected() || !getClient().getKeepAlive()) {
+                        Socket client = new Socket(ip, 25565);
+                        Toast.makeText(getApplicationContext(), "Connected to " + ip + " : 25565", Toast.LENGTH_SHORT).show();
 
-                    // Set the static client as the new one and create a Sender and Receiver
-                    setClient(client);
-                    PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-                    BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                        // Set the static client as the new one and create a Sender and Receiver
+                        setClient(client);
+                    }
+                    PrintWriter out = new PrintWriter(getClient().getOutputStream(), true);
+                    BufferedReader in = new BufferedReader(new InputStreamReader(getClient().getInputStream()));
 
                     // Receive Subject
                     String subject = in.readLine();
                     while(subject.contains("disconnect from this brainstorm now")) subject = in.readLine();
-                    //out.println("Got the subject. " + subject);
 
                     // Go to next page
                     Intent forwardIntent = new Intent(getApplicationContext(), SendActivity.class);
@@ -74,13 +75,14 @@ public class ConnectionActivity extends AppCompatActivity {
                     /*
                     * Catch IOException if cannot connect and return to MainActivity
                     */
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                     Intent returnIntent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(returnIntent);
                 }
-
+                Looper.loop();
             }
         });
-
+        connectionThread.setDaemon(true);
         connectionThread.start();
 
     }

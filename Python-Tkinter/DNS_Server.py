@@ -31,8 +31,12 @@ class DNS:
             print(f'set {code} for {target}')
         elif "get" in cmd:
             ip = self.getIPByCode(target)
-            client.send(f'{ip}\n'.encode())
-            print(f'given {ip} for {target}')
+            if ip is None:
+                client.send("Wrong Code\n".encode())
+                print("client gave wrong code.")
+            else:
+                client.send(f'{ip}\n'.encode())
+                print(f'given {ip} for {target}')
         else:
             pass
 

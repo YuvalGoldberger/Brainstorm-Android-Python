@@ -25,7 +25,7 @@ public class SendActivity extends AppCompatActivity {
     private EditText NAME, MESSAGE;
     private Socket client;
     private BufferedReader in;
-    private String subj = "";
+    private String subj = "", message;
     private boolean sent;
 
     @Override
@@ -35,8 +35,9 @@ public class SendActivity extends AppCompatActivity {
         // Get IP, Port, Subject and Name
         Intent getExtrasFromMainIntent = getIntent();
         String[] arr = getExtrasFromMainIntent.getStringArrayExtra("subj_name");
-        //setSent(false);
+
         sent = false;
+        MESSAGE = findViewById(R.id.msg);
 
         // Gets the name and subject from last intent and sets it in the TextView
         subj = arr[0];
@@ -81,6 +82,7 @@ public class SendActivity extends AppCompatActivity {
         });
         disconnectThread.start();
 
+
         // Start thread again as MainUIThread cannot use sockets
         Thread sendThread = new Thread(new Runnable() {
             @Override
@@ -89,14 +91,7 @@ public class SendActivity extends AppCompatActivity {
                 Looper.prepare();
 
                 try {
-                    // Get message from EditText and make sure it's not empty
-                    MESSAGE = findViewById(R.id.msg);
-                    String message = MESSAGE.getText().toString();
-                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
-                    if(message.isEmpty() || message.length() == 0) {
-                        Toast.makeText(getApplicationContext(), "הכנס אסוציאציה", Toast.LENGTH_SHORT).show();
-                    }
                     // Create a Sender
                     PrintWriter out1 = new PrintWriter(client.getOutputStream(), true);
 
@@ -116,10 +111,22 @@ public class SendActivity extends AppCompatActivity {
             }
         });
 
+        sendThread.setDaemon(true);
+
+
+
         sendButton = (Button) findViewById(R.id.send_button);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Get message from EditText and make sure it's not empty
+                message = MESSAGE.getText().toString();
+
+                if(message.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "הכנס אסוציאציה", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 sendThread.start();
 
             }
