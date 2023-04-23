@@ -1,6 +1,8 @@
 package me.yuval.brainstorm;
 
 import static me.yuval.brainstorm.MainActivity.getClient;
+import static me.yuval.brainstorm.MainActivity.getName;
+import static me.yuval.brainstorm.MainActivity.getSubject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,7 +24,7 @@ import java.security.KeyStore;
 public class SendActivity extends AppCompatActivity {
 
     private Button sendButton;
-    private EditText NAME, MESSAGE;
+    private EditText MESSAGE;
     private Socket client;
     private BufferedReader in;
     private String subj = "", message;
@@ -32,18 +34,17 @@ public class SendActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send);
-        // Get IP, Port, Subject and Name
-        Intent getExtrasFromMainIntent = getIntent();
-        String[] arr = getExtrasFromMainIntent.getStringArrayExtra("subj_name");
+        // Get Subject, Name
+
+        String name = getName();
+        subj = getSubject();
 
         sent = false;
         MESSAGE = findViewById(R.id.msg);
 
         // Gets the name and subject from last intent and sets it in the TextView
-        subj = arr[0];
         Toast.makeText(getApplicationContext(), subj, Toast.LENGTH_SHORT).show();
 
-        String name = arr[1];
         TextView nameTextView = findViewById(R.id.name);
         nameTextView.setText("מחובר כ: " + name);
 

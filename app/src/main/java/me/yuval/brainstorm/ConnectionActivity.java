@@ -2,8 +2,9 @@ package me.yuval.brainstorm;
 
 
 import static me.yuval.brainstorm.MainActivity.getClient;
-import static me.yuval.brainstorm.MainActivity.getIPandName;
+import static me.yuval.brainstorm.MainActivity.getIP;
 import static me.yuval.brainstorm.MainActivity.setClient;
+import static me.yuval.brainstorm.MainActivity.setSubject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,10 +24,7 @@ public class ConnectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection);
 
-        String[] arr = getIPandName();
-
-        String ip = arr[0];
-        String name = arr[1];
+        String ip = getIP();
 
         backButton = findViewById(R.id.back);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -65,10 +63,10 @@ public class ConnectionActivity extends AppCompatActivity {
                     // Receive Subject
                     String subject = in.readLine();
                     while(subject.contains("disconnect from this brainstorm now")) subject = in.readLine();
+                    setSubject(subject);
 
                     // Go to next page
                     Intent forwardIntent = new Intent(getApplicationContext(), SendActivity.class);
-                    forwardIntent.putExtra("subj_name", new String[] { subject, name });
                     startActivity(forwardIntent);
 
                 } catch (IOException e) {

@@ -1,6 +1,3 @@
-import customtkinter
-from customtkinter import *
-from tkinter import *
 import random   
 
 class TextDesign:
@@ -36,3 +33,6 @@ class TextDesign:
 
 if __name__ == '__main__':
     TextDesign()
+
+
+    

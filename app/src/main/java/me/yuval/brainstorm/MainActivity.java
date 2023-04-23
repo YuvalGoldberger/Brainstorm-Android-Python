@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText Code, Name;
     private String code;
     private static Socket client;
-    private static String ip, name;
+    private static String ip, name, subject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,11 +100,27 @@ public class MainActivity extends AppCompatActivity {
         client = newClient;
     }
 
-    public static String[] getIPandName() {
-        /*
-        * Returns the STATIC ip and name attributes. Used for multiple uses of "ConnectionActivity"
-        */
-        return new String[] { ip, name };
+    public static String getIP() {
+        return ip;
     }
+    public static String getName() {
+        /*
+        * Returns the STATIC name attribute.
+        */
+        return name;
+    }
+    public static String getSubject() {
+        /*
+        * Returns Static Subject
+         */
+        return subject;
+    }
+    public static void setSubject(String subj) {
+        /*
+        * Sets the Static attribute Subject
+        */
+        subject = subj;
+    }
+
 
 }
