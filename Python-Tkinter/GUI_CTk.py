@@ -88,7 +88,7 @@ class GUI:
         optionsLabel = CTkLabel(self.screen, text="בחר כמות משתתפים", font=("Assistant SemiBold", 25))
         optionsLabel.place(relx = 0.25, rely = 0.25, anchor=E)
 
-        options = [f'{self.MAX_CLIENTS} Participants (Default)'] + [f'{i-1} Participants' for i in range(self.MAX_CLIENTS, self.MAX_CLIENTS - 30, -1)]
+        options = [f'{self.MAX_CLIENTS} Participants'] + [f'{i-1} Participants' for i in range(int(self.MAX_CLIENTS), int(self.MAX_CLIENTS) - 30, -1)]
         self.optionsParticipants = CTkOptionMenu(self.screen, values=options, text_color="#000000", fg_color="#c3ecf7", command=self.getParticipantsAmount)
         self.optionsParticipants.place(relx = 0.2, rely=0.3, anchor=E)
 
@@ -221,7 +221,7 @@ class GUI:
         """
         * Gets chosen participants amount and sets it to the server 
         """
-        self.MAX_CLIENTS = choice.split(" ")[0]
+        self.MAX_CLIENTS = int(choice.split(" ")[0])
         print(self.MAX_CLIENTS)
         self.optionsParticipants.set(choice)
         
@@ -304,4 +304,5 @@ class GUI:
         
 
 if __name__ == '__main__':
+    print(customtkinter.__version__)
     GUI()
